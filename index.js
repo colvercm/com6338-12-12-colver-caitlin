@@ -1,3 +1,7 @@
+let remainingGuesses = document.getElementById("remaining-guesses");
+let incorrectLetters = document.getElementById("incorrect-letters");
+let wordToGuess = document.getElementById("word-to-guess");
+
 const words = [
   'bananas',
   'grapes',
@@ -26,16 +30,53 @@ class Word {
   }
 
   // implement the guessLetter function:
-  // guessLetter(letter) {}
+  guessLetter(letter) {
+    let wordArray = this.word.split('')
+    let displayArray = this.displayWord.split('')
+    let correct = false
+    for (var i = 0; i < wordArray.length; i++){
+      if (wordArray[i] == letter){
+        correct = true
+        this.correctLetters.push(letter)
+        displayArray[i] = letter
+      }else{
+
+      }
+    }
+    if (correct === true) {
+      this.displayWord = displayArray.join('')
+    }else{
+      this.remainingGuesses--
+      this.incorrectLetters.push(letter)
+    }
+  }
 
   // implement the updateScreen function:
-  // updateScreen() {}
+  updateScreen() {
+    remainingGuesses.textContent = this.remainingGuesses
+    incorrectLetters.textContent = this.incorrectLetters
+    wordToGuess.textContent = this.displayWord
+  }
 
   // implement the isGameOver function:
-  // isGameOver() {}
+  isGameOver() {
+    if (this.remainingGuesses <= 0 || this.word === this.displayWord) {
+      return true
+    }else{
+      return false
+    }
+  }
 
   // implement the getWinOrLoss function:
-  // getWinOrLoss() {}
+  getWinOrLoss() {
+    if (this.word === this.displayWord && this.remainingGuesses > 0) {
+        return 'win'
+    } else if (this.word !== this.displayWord && this.remainingGuesses <= 0) {
+        return 'loss';
+    } else {
+        return null;
+    }
+  }
 }
 
 function newGame() {
@@ -55,7 +96,7 @@ document.onkeyup = function(e) {
   currentWord.updateScreen()
 
   // check if game is over
-  const gameOver = currentWord.isGameOver()
+  const gameOver = currentWord.isGameOver();
 
   // if game is over, update wins/losses and start new game
   if (gameOver) {
